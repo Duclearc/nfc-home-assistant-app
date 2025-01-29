@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@/components/HapticTab";
-import { LayoutDashboard, SmartphoneNfc } from "~/lib/icons/lucide";
+import { LayoutDashboard, SmartphoneNfc, ScanText } from "~/lib/icons/lucide";
 
 export default function TabLayout() {
   return (
@@ -30,6 +30,17 @@ export default function TabLayout() {
           title: "Tags",
           tabBarIcon: ({ focused }) => (
             <SmartphoneNfc
+              className={focused ? "text-black" : "text-slate-500"}
+            />
+          ),
+        }}
+      />
+       <Tabs.Screen
+        name="tag-data/index"
+        options={{
+          title: "Scan",
+          tabBarIcon: ({ focused }) => (
+            <ScanText
               className={focused ? "text-black" : "text-slate-500"}
             />
           ),
