@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
 
-import DashCard from "../components/dash-card";
+import DashCard from "../../components/dashboards/dash-card";
 
 export default function HomeScreen() {
   return (
