@@ -9,10 +9,13 @@ function NfcTest() {
   async function readNdef() {
     try {
       // register for the NFC tag with NDEF in it
-      const res = await NfcManager.requestTechnology(NfcTech.Ndef);
-      console.log("RESPONSE: ", res);
+      await NfcManager.requestTechnology(NfcTech.Ndef);
+
+      NfcManager.ndefHandler.writeNdefMessage;
+
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
+      NfcManager.close;
       console.warn("Tag found", JSON.stringify(tag, null, 2));
     } catch (ex) {
       console.warn("Oops!", ex);
