@@ -43,6 +43,12 @@
           "systemCodes": ["8008"],
           "includeNdefEntitlement": false
         }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true
+        }
       ]
     ],
     "experiments": {

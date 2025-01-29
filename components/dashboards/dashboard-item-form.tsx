@@ -78,7 +78,6 @@ const DashboardItemForm = ({
       <DialogTrigger asChild>
         <Button className="w-full flex flex-row items-center justify-center">
           <Plus className="text-white w-3 h-3 mr-2" />
-          <Text>Add Item</Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
