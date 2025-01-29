@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { TDashboardItem } from "../types/dashboard";
+import { DashboardItem as TDashboardItem } from "../types/dashboard";
 import { secureStorage } from "./secure-storage";
 
 type DashboardStore = {

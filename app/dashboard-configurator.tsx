@@ -12,7 +12,7 @@ import DashboardItemForm from "~/components/dashboards/dashboard-item-form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import useDashboardsStore from "~/stores/dashboards";
-import { TDashboardItem } from "~/types/dashboard";
+import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { Separator } from "~/components/ui/separator";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";

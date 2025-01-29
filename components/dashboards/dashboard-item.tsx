@@ -1,5 +1,5 @@
 import { Card, CardTitle, CardHeader, CardContent } from "../ui/card";
-import { TDashboardItem } from "~/types/dashboard";
+import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { getIcon } from "~/lib/icons/getIcon";
 
 const DashboardItem = ({

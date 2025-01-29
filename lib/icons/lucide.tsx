@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   Lightbulb,
   AlarmClock,
+  Target,
 } from "lucide-react-native";
 
 iconWithClassName(Trash2);
@@ -17,6 +18,8 @@ iconWithClassName(Plus);
 iconWithClassName(ArrowLeft);
 iconWithClassName(Lightbulb);
 iconWithClassName(AlarmClock);
+iconWithClassName(Target);
+
 export {
   Trash2,
   LayoutDashboard,
@@ -25,4 +28,5 @@ export {
   ArrowLeft,
   Lightbulb,
   AlarmClock,
+  Target,
 };

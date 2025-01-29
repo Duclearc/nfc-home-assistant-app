@@ -2,7 +2,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { iconMap } from "~/lib/icons/getIcon";
 import { Plus } from "~/lib/icons/lucide";
-import { IconName, TDashboardItem } from "~/types/dashboard";
+import { IconName, DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { Button } from "../ui/button";
 import {
   Dialog,

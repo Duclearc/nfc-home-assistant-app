@@ -41,7 +41,7 @@ export default function TagConfigScreen() {
   return (
     <ScrollView>
       <View className="p-4">
-        <Text className="text-2xl font-bold">NFC Tag Configuration</Text>
+        <Text className="text-2xl font-bold">Configure dashboards</Text>
         {tags.map((tag) => (
           <TagCard
             key={tag.id}
