@@ -4,7 +4,9 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 type dataState = {
   data?: string;
-  setData: (data: string) => void;
+  setData: (data?: string) => void;
+  isScanning: boolean;
+  setIsScanning: (isScanning: boolean) => void;
 };
 
 export const useDataStore = create(
@@ -12,6 +14,10 @@ export const useDataStore = create(
     (set) => ({
       setData: (data) => {
         set((state) => ({ ...state, data }));
+      },
+      isScanning: false,
+      setIsScanning: (isScanning) => {
+        set((state) => ({ ...state, isScanning }));
       },
     }),
     {
