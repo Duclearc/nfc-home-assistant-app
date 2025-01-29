@@ -1,0 +1,7 @@
+{
+    "search.exclude": {
+        "**/node_modules": true,
+        "ios": true,
+        "android": true,
+    }
+}
