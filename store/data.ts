@@ -3,8 +3,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 type dataState = {
-  data?: string;
-  setData: (data?: string) => void;
+  data?: Object;
+  setData: (data?: Object) => void;
   isScanning: boolean;
   setIsScanning: (isScanning: boolean) => void;
 };
