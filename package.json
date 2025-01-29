@@ -19,8 +19,10 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "@rn-primitives/dialog": "^1.1.0",
     "@rn-primitives/label": "^1.1.0",
     "@rn-primitives/portal": "^1.1.0",
+    "@rn-primitives/select": "^1.1.0",
     "@rn-primitives/slot": "^1.1.0",
     "@rn-primitives/types": "^1.1.0",
     "class-variance-authority": "^0.7.1",
@@ -52,6 +54,7 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
+    "sonner-native": "^0.16.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7"

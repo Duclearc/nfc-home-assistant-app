@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import TagCard, { Tag } from "../../components/tag-config/tag";
 import { Plus } from "~/lib/icons/lucide";
+import { useRouter } from "expo-router";
 
 const initialTags = [
   {
@@ -21,6 +22,8 @@ const initialTags = [
 ];
 
 export default function TagConfigScreen() {
+  const router = useRouter();
+
   const [tags, setTags] = useState<Tag[]>(initialTags);
 
   const addTag = () => {
@@ -47,9 +50,13 @@ export default function TagConfigScreen() {
             removeTag={removeTag}
           />
         ))}
-        <Button onPress={addTag} className="w-full">
+        <Button
+          onPress={addTag}
+          className="w-full"
+          onPressIn={() => router.navigate("/dashboard-configurator")}
+        >
           <Text>
-            <Plus className="mr-2 h-4 w-4" /> Add New NFC Tag
+            <Plus className="mr-2 h-4 w-4" /> Configure new dashboard
           </Text>
         </Button>
       </View>

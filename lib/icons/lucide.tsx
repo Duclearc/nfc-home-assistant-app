@@ -5,10 +5,24 @@ import {
   LayoutDashboard,
   SmartphoneNfc,
   Plus,
+  ArrowLeft,
+  Lightbulb,
+  AlarmClock,
 } from "lucide-react-native";
+
 iconWithClassName(Trash2);
 iconWithClassName(LayoutDashboard);
 iconWithClassName(SmartphoneNfc);
 iconWithClassName(Plus);
-
-export { Trash2, LayoutDashboard, SmartphoneNfc, Plus };
+iconWithClassName(ArrowLeft);
+iconWithClassName(Lightbulb);
+iconWithClassName(AlarmClock);
+export {
+  Trash2,
+  LayoutDashboard,
+  SmartphoneNfc,
+  Plus,
+  ArrowLeft,
+  Lightbulb,
+  AlarmClock,
+};
