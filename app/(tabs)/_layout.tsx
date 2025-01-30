@@ -35,17 +35,6 @@ export default function TabLayout() {
           ),
         }}
       />
-       <Tabs.Screen
-        name="tag-data/index"
-        options={{
-          title: "Scan",
-          tabBarIcon: ({ focused }) => (
-            <ScanText
-              className={focused ? "text-black" : "text-slate-500"}
-            />
-          ),
-        }}
-      />
     </Tabs>
   );
 }
