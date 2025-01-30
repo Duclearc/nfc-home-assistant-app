@@ -37,7 +37,6 @@ export default function HomeScreen() {
     setIsScanning(true);
 
     if (!query) return setIsScanning(false);
-    console.log({ query });
 
     const byteArray = toByteArray(query as string);
     const dashboardProtoData =

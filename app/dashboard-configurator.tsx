@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -15,12 +15,18 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
-import useDashboardsStore from "~/stores/dashboards";
 import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import SaveDashDialog from "../components/tag-config/save-dashboard-dialog";
+import useHomeAssistantStore from "../stores/home-assistant";
+import { getDevices } from "../lib/home-assistant/client";
 
 const DashboardConfigurator = () => {
-  const dashboards = useDashboardsStore();
+  const {
+    isLoading: isLoadingHomeAssistant,
+    setIsLoading: setIsLoadingHomeAssistant,
+    setDevices,
+    devices,
+  } = useHomeAssistantStore();
 
   const [dashboardName, setDashboardName] = useState("Test dash 1");
   const [homeAssistantUrl, setHomeAssistantUrl] = useState(
@@ -43,6 +49,22 @@ const DashboardConfigurator = () => {
 
   const addItem = (newItem: TDashboardItem) => {
     setDashboardItems([...dashboardItems, newItem]);
+  };
+
+  const handleGetDevices = async () => {
+    if (!homeAssistantUrl || !homeAssistantApiKey) {
+      toast.error("Please enter a Home Assistant URL and API key");
+      return;
+    }
+
+    try {
+      const devices = await getDevices();
+      setDevices(devices);
+    } catch (error) {
+      toast.error("Error fetching devices from Home Assistant");
+    } finally {
+      setIsLoadingHomeAssistant(false);
+    }
   };
 
   return (
@@ -90,6 +112,21 @@ const DashboardConfigurator = () => {
 
             <Separator className="my-4" />
 
+            <View>
+              <Text className="text-2xl font-light mb-4">Dashboard items</Text>
+              {isLoadingHomeAssistant ? (
+                <Text>Loading data from Home Assistant...</Text>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onPress={handleGetDevices}
+                >
+                  <Text>Get devices from Home Assistant</Text>
+                </Button>
+              )}
+            </View>
+
             <View className="flex flex-row flex-wrap justify-between mb-2">
               {dashboardItems.map((item) => (
                 <View key={item.name} className="w-[49%]">
@@ -97,10 +134,8 @@ const DashboardConfigurator = () => {
                 </View>
               ))}
             </View>
-            <View>
-              <Text className="text-2xl font-light mb-4">Dashboard items</Text>
-              <DashboardItemForm addItem={addItem} />
-            </View>
+
+            <DashboardItemForm addItem={addItem} />
           </View>
 
           <View className="p-4 border-t border-border bg-background">

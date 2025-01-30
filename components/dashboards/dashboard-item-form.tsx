@@ -24,18 +24,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Text } from "../ui/text";
-
-const iconOptions = Object.keys(iconMap).map((icon) => ({
-  label: icon,
-  value: icon,
-  icon: iconMap[icon as keyof typeof iconMap],
-}));
+import useHomeAssistantStore from "../../stores/home-assistant";
 
 const DashboardItemForm = ({
   addItem,
 }: {
   addItem: (item: TDashboardItem) => void;
 }) => {
+  const { isLoading: isLoadingHomeAssistant, devices } =
+    useHomeAssistantStore();
   const [open, setOpen] = useState(false);
 
   const [url, setUrl] = useState("");
@@ -73,10 +70,18 @@ const DashboardItemForm = ({
     setOpen(false);
   }
 
+  const iconOptions = devices.map((device) => ({
+    label: `${device.name}: ${device.entities.join("|")}`,
+    value: device.id,
+  }));
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full flex flex-row items-center justify-center">
+        <Button
+          disabled={isLoadingHomeAssistant || devices.length === 0}
+          className="w-full flex flex-row items-center justify-center"
+        >
           <Plus className="text-white w-3 h-3 mr-2" />
         </Button>
       </DialogTrigger>
