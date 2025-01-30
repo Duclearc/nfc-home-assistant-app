@@ -34,6 +34,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
 
     // LOOK HERE
     const url = `${config.scheme}:///?query=${base64Data}`;
+    // const url = `${config.scheme}:///?query=${base64Data}`;
 
     console.log(`JSON string size: ${jsonStringSize} bytes`);
     console.log(`Base64 data size: ${base64DataSize} bytes`);
@@ -50,6 +51,8 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
     await NfcManager.requestTechnology(NfcTech.Ndef);
 
     console.log(`Writing ${base64DataSize} bytes to NFC tag`);
+
+    console.log(url);
 
     const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
 

@@ -16,6 +16,7 @@ import { Dashboard } from "../../types/dashboard";
 import { writeDashboardToTag } from "../../lib/nfc/write-dashboard";
 import { toast } from "sonner-native";
 import useDashboardsStore from "../../stores/dashboards";
+import { useRouter } from "expo-router";
 
 // Pre-step, call this before any NFC operations
 nfcManager.start();
@@ -23,6 +24,7 @@ nfcManager.start();
 const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
   const [open, setOpen] = useState(false);
   const dashboards = useDashboardsStore();
+  const router = useRouter();
 
   const attemptWrite = async () => {
     console.log("Attempting to write to NFC tag...");
@@ -34,6 +36,7 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
       setOpen(false);
       toast.success("Dashboard saved to NFC tag");
       dashboards.addDashboard(dashboard);
+      router.push("/tag-config");
     } else {
       setOpen(false);
       toast.error(response.error);
@@ -43,6 +46,8 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
   useEffect(() => {
     if (open) {
       attemptWrite();
+    } else {
+      nfcManager.cancelTechnologyRequest();
     }
   }, [open]);
 

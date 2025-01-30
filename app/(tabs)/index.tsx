@@ -74,14 +74,14 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 py-10 px-5">
-      <ScrollView className="flex-1">
-        {isScanning ? <ActivityIndicator /> : null}
-        {!currentDash ? (
-          <ScanView />
-        ) : (
-          <View>
-            <Text className="text-3xl font-light">{currentDash.name}</Text>
-            <Separator className="my-2" />
+      {isScanning ? <ActivityIndicator /> : null}
+      {!currentDash ? (
+        <ScanView />
+      ) : (
+        <View>
+          <Text className="text-3xl font-light">{currentDash.name}</Text>
+          <Separator className="my-2" />
+          <ScrollView>
             {currentDash.items.map((item) => (
               <Pressable
                 key={item.entity}
@@ -102,8 +102,10 @@ export default function HomeScreen() {
                 <DashboardItem dashItem={item} />
               </Pressable>
             ))}
-          </View>
-        )}
+          </ScrollView>
+        </View>
+      )}
+      {currentDash ? (
         <Button
           className="my-2 items-center justify-center"
           variant="outline"
@@ -112,7 +114,7 @@ export default function HomeScreen() {
             setCurrentDash(undefined);
           }}
         />
-      </ScrollView>
+      ) : null}
     </SafeAreaView>
   );
 }

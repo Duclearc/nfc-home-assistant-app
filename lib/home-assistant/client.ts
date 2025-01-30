@@ -94,7 +94,7 @@ export const triggerService = async (
     ? "automation"
     : "input_text";
 
-  console.log("Triggering service", path);
+  console.log("Triggering service", path, entity);
 
   const res = await fetch(`${url}/api/services/${path}`, {
     method: "POST",
