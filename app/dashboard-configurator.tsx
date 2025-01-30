@@ -30,18 +30,20 @@ const DashboardConfigurator = () => {
 
   const [dashboardName, setDashboardName] = useState("Test dash 1");
   const [homeAssistantUrl, setHomeAssistantUrl] = useState(
-    "http://localhost:8123"
+    "http://homeassistant.local:8123"
   );
-  const [homeAssistantApiKey, setHomeAssistantApiKey] = useState("1234567890");
+  const [homeAssistantApiKey, setHomeAssistantApiKey] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhOTI5OWQwNTE1OTU0MjNjOWIxNjIzODZhOWU2YzMyYSIsImlhdCI6MTczODIzNTM2NiwiZXhwIjoyMDUzNTk1MzY2fQ.hq8xzth-_h0nQ3b2D8nyqWQec9l1lWyqzBNkrxvVHX0"
+  );
 
   const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([
     {
-      automation_path: "automation/test",
+      entity: "automation/test",
       icon: "lightbulb",
       name: "Test item 1",
     },
     {
-      automation_path: "automation/test2",
+      entity: "automation/test2",
       icon: "alarm",
       name: "Test item 2",
     },
@@ -58,9 +60,10 @@ const DashboardConfigurator = () => {
     }
 
     try {
-      const devices = await getDevices();
+      const devices = await getDevices(homeAssistantUrl, homeAssistantApiKey);
       setDevices(devices);
     } catch (error) {
+      console.error(error);
       toast.error("Error fetching devices from Home Assistant");
     } finally {
       setIsLoadingHomeAssistant(false);
@@ -119,7 +122,7 @@ const DashboardConfigurator = () => {
               ) : (
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full my-2"
                   onPress={handleGetDevices}
                 >
                   <Text>Get devices from Home Assistant</Text>

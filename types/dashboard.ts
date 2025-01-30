@@ -16,7 +16,7 @@ export type Dashboard = DashboardConfig & {
 
 export type DashboardItem = {
   /* automation trigger url */
-  automation_path: string;
+  entity: string;
   // datasource: string; possible websocket url for
   icon: IconName;
   name: string;

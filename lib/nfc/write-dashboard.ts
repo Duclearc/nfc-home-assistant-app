@@ -22,7 +22,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
       url_base: dashboard.url_base,
       items: dashboard.items.map((i) => ({
         ...i,
-        automation_path: i.automation_path,
+        automation_path: i.entity,
       })),
     });
 

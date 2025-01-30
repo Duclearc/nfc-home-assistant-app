@@ -5,7 +5,7 @@ import { secureStorage } from "./secure-storage";
 type HomeAssistantStore = {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  devices: Array<any>;
+  devices: Array<{ deviceId: string; entities: string[]; name: string }>;
   setDevices: (devices: Array<any>) => void;
 };
 
