@@ -3,10 +3,9 @@ import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { getIcon } from "~/lib/icons/getIcon";
 
 const DashboardItem = ({
-  isEditable,
   dashItem,
 }: {
-  isEditable: boolean;
+  isEditable?: boolean;
   dashItem: TDashboardItem;
 }) => {
   return (

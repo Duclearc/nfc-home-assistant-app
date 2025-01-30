@@ -1,7 +1,7 @@
 import { toByteArray } from "base64-js";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
@@ -10,7 +10,10 @@ import { SmartphoneNfc } from "~/lib/icons/lucide";
 import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
 import useDashboardsStore from "~/stores/dashboards";
 import { useDataStore } from "~/stores/data";
-import { Dashboard, IconName } from "~/types/dashboard";
+import { Dashboard } from "~/types/dashboard";
+import DashboardItem from "~/components/dashboards/dashboard-item";
+import { triggerService } from "../../lib/home-assistant/client";
+import { toast } from "sonner-native";
 
 const ScanView = () => (
   <View className="h-full flex-1 items-center justify-center">
@@ -34,6 +37,7 @@ export default function HomeScreen() {
   const { addDashboard } = useDashboardsStore();
 
   const runWhenTabOpens = () => {
+    console.log("Running when tab opens! ", query);
     setIsScanning(true);
 
     if (!query) return setIsScanning(false);
@@ -49,8 +53,7 @@ export default function HomeScreen() {
       name: dashboardData.name!,
       items: dashboardData.items!.map((i) => ({
         name: i.name!,
-        automation_path: i.automation_path!,
-        icon: i.icon! as IconName,
+        entity: i.entity!,
       })),
     };
 
@@ -77,21 +80,38 @@ export default function HomeScreen() {
           <ScanView />
         ) : (
           <View>
-            <Button
-              className="mb-10 items-center justify-center"
-              children={
-                <Text className="text-white font-bold text-3xl tracking-widest uppercase">
-                  reset
-                </Text>
-              }
-              onPress={() => {
-                setCurrentDash(undefined);
-              }}
-            />
             <Text className="text-3xl font-light">{currentDash.name}</Text>
             <Separator className="my-2" />
+            {currentDash.items.map((item) => (
+              <Pressable
+                key={item.entity}
+                onPress={async () => {
+                  const success = await triggerService(
+                    currentDash.url_base,
+                    currentDash.api_key,
+                    "turn_on",
+                    item.entity
+                  );
+                  if (success) {
+                    toast.success("Service triggered successfully");
+                  } else {
+                    toast.error("Failed to trigger service");
+                  }
+                }}
+              >
+                <DashboardItem dashItem={item} />
+              </Pressable>
+            ))}
           </View>
         )}
+        <Button
+          className="my-2 items-center justify-center"
+          variant="outline"
+          children={<Text>Clear</Text>}
+          onPress={() => {
+            setCurrentDash(undefined);
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );

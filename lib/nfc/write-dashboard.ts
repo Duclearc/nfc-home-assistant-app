@@ -22,7 +22,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
       url_base: dashboard.url_base,
       items: dashboard.items.map((i) => ({
         ...i,
-        automation_path: i.entity,
+        entity: i.entity,
       })),
     });
 
@@ -43,6 +43,8 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
         `Dashboard data exceeds maximum size of ${MAX_PAYLOAD_SIZE_BYTES} bytes`
       );
     }
+
+    console.log("Writing to NFC tag", url);
 
     // STEP 1
     await NfcManager.requestTechnology(NfcTech.Ndef);

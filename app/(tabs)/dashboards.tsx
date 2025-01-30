@@ -30,9 +30,7 @@ export default function Dashboards() {
                         )}
                         <Text className="text-lg">{item.name}</Text>
                       </View>
-                      <Text className="text-lg font-mono">
-                        {item.automation_path}
-                      </Text>
+                      <Text className="text-lg font-mono">{item.entity}</Text>
                     </View>
                   )}
                 />

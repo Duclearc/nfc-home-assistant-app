@@ -11,6 +11,6 @@ message Dashboard {
 
 message DashboardItem {
   string name = 1;
-  string automation_path = 2;
+  string entity = 2;
   string icon = 3;
 }

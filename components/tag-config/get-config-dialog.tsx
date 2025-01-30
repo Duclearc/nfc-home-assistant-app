@@ -37,14 +37,14 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full">
-          <Text>Save to NFC Tag</Text>
+          <Text>Get config from NFC Tag</Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Scan NFC Tag</DialogTitle>
           <DialogDescription>
-            Hold your phone against the NFC tag to save this dashboard.
+            Hold your phone against the NFC tag get the config.
           </DialogDescription>
         </DialogHeader>
 

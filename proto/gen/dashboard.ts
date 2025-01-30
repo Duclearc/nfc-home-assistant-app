@@ -145,7 +145,7 @@ export namespace dashboard {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             name?: string;
-            automation_path?: string;
+            entity?: string;
             icon?: string;
         }) {
             super();
@@ -154,8 +154,8 @@ export namespace dashboard {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
                 }
-                if ("automation_path" in data && data.automation_path != undefined) {
-                    this.automation_path = data.automation_path;
+                if ("entity" in data && data.entity != undefined) {
+                    this.entity = data.entity;
                 }
                 if ("icon" in data && data.icon != undefined) {
                     this.icon = data.icon;
@@ -168,10 +168,10 @@ export namespace dashboard {
         set name(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
-        get automation_path() {
+        get entity() {
             return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set automation_path(value: string) {
+        set entity(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
         get icon() {
@@ -182,15 +182,15 @@ export namespace dashboard {
         }
         static fromObject(data: {
             name?: string;
-            automation_path?: string;
+            entity?: string;
             icon?: string;
         }): DashboardItem {
             const message = new DashboardItem({});
             if (data.name != null) {
                 message.name = data.name;
             }
-            if (data.automation_path != null) {
-                message.automation_path = data.automation_path;
+            if (data.entity != null) {
+                message.entity = data.entity;
             }
             if (data.icon != null) {
                 message.icon = data.icon;
@@ -200,14 +200,14 @@ export namespace dashboard {
         toObject() {
             const data: {
                 name?: string;
-                automation_path?: string;
+                entity?: string;
                 icon?: string;
             } = {};
             if (this.name != null) {
                 data.name = this.name;
             }
-            if (this.automation_path != null) {
-                data.automation_path = this.automation_path;
+            if (this.entity != null) {
+                data.entity = this.entity;
             }
             if (this.icon != null) {
                 data.icon = this.icon;
@@ -220,8 +220,8 @@ export namespace dashboard {
             const writer = w || new pb_1.BinaryWriter();
             if (this.name.length)
                 writer.writeString(1, this.name);
-            if (this.automation_path.length)
-                writer.writeString(2, this.automation_path);
+            if (this.entity.length)
+                writer.writeString(2, this.entity);
             if (this.icon.length)
                 writer.writeString(3, this.icon);
             if (!w)
@@ -237,7 +237,7 @@ export namespace dashboard {
                         message.name = reader.readString();
                         break;
                     case 2:
-                        message.automation_path = reader.readString();
+                        message.entity = reader.readString();
                         break;
                     case 3:
                         message.icon = reader.readString();

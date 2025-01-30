@@ -26,6 +26,7 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
 
   const attemptWrite = async () => {
     console.log("Attempting to write to NFC tag...");
+    console.log(dashboard);
     const response = await writeDashboardToTag(dashboard);
 
     if (response.success) {

@@ -81,3 +81,37 @@ export const getDevices = async (url: string, key: string) => {
     throw error;
   }
 };
+
+export const triggerService = async (
+  url: string,
+  key: string,
+  service: string,
+  entity: string
+) => {
+  const path = entity.includes("light.")
+    ? "light/toggle"
+    : entity.includes("automation.")
+    ? "automation"
+    : "input_text";
+
+  console.log("Triggering service", path);
+
+  const res = await fetch(`${url}/api/services/${path}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      entity_id: entity,
+    }),
+  });
+
+  if (res.status !== 200) {
+    console.error("Failed to trigger service: ", res);
+    return false;
+  }
+
+  console.log("Service triggered successfully");
+  return true;
+};

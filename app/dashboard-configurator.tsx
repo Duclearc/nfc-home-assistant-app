@@ -30,10 +30,10 @@ const DashboardConfigurator = () => {
 
   const [dashboardName, setDashboardName] = useState("Test dash 1");
   const [homeAssistantUrl, setHomeAssistantUrl] = useState(
-    "http://homeassistant.local:8123"
+    process.env.EXPO_PUBLIC_HOME_ASSISTANT_URL || ""
   );
   const [homeAssistantApiKey, setHomeAssistantApiKey] = useState(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhOTI5OWQwNTE1OTU0MjNjOWIxNjIzODZhOWU2YzMyYSIsImlhdCI6MTczODIzNTM2NiwiZXhwIjoyMDUzNTk1MzY2fQ.hq8xzth-_h0nQ3b2D8nyqWQec9l1lWyqzBNkrxvVHX0"
+    process.env.EXPO_PUBLIC_HOME_ASSISTANT_API_KEY || ""
   );
 
   const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([]);
