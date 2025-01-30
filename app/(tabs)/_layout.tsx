@@ -1,8 +1,4 @@
 import { Tabs } from "expo-router";
-import React from "react";
-
-import { HapticTab } from "@/components/HapticTab";
-import { Home, LayoutDashboard, SmartphoneNfc } from "~/lib/icons/lucide";
 import TabBar from "~/components/tab-bar/TabBar";
 
 export default function TabLayout() {

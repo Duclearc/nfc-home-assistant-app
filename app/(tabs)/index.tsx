@@ -16,7 +16,7 @@ import { triggerService } from "../../lib/home-assistant/client";
 import { toast } from "sonner-native";
 
 const ScanView = () => (
-  <View className="h-full flex-1 items-center justify-center">
+  <View className="flex-1 items-center justify-center">
     <View className="items-center justify-center">
       <View className="w-32 h-32 rounded-full bg-muted items-center justify-center mb-4 border border-muted-foreground">
         <SmartphoneNfc size={72} className="text-muted-foreground" />

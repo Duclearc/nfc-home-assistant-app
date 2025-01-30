@@ -44,7 +44,7 @@ export default function TabBarButton(props: TabBarButtonProps) {
   }));
 
   return (
-    <Pressable {...props} className="flex-1 justify-center items-center gap-1">
+    <Pressable {...props} className="justify-center items-center gap-1">
       <Animated.View style={[animatedIconStyle]}>
         {icons[routeName]({ color })}
       </Animated.View>

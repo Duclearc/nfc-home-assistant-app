@@ -12,7 +12,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const inactiveColor = Colors[colorScheme].tabIconDefault;
 
   return (
-    <View className="flex-row justify-between align-center bg-white p-5 mt-5 rounded-t-3xl shadow-md shadow-gray-500/30">
+    <View className="flex-row justify-between align-center bg-white py-5 px-10 my-5 mx-10 rounded-3xl shadow-md shadow-gray-500/30">
       {state.routes.map((route, index) => {
         const label = descriptors[route.key].options.title ?? route.name;
 
