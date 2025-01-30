@@ -12,10 +12,6 @@ export default function RootLayout() {
       <SafeAreaView style={{ flex: 1 }}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="dashboard-configurator"
-            options={{ title: "Configure new dashboard" }}
-          />
         </Stack>
         <PortalHost />
         <Toaster position="top-center" />

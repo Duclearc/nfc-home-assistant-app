@@ -3,47 +3,30 @@ import React from "react";
 
 import { HapticTab } from "@/components/HapticTab";
 import { Home, LayoutDashboard, SmartphoneNfc } from "~/lib/icons/lucide";
+import TabBar from "~/components/tab-bar/TabBar";
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#000",
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}
-    >
+    <Tabs tabBar={(props) => <TabBar {...props} />}>
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <Home
-              className={focused ? "text-black" : "text-slate-500"}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
         name="dashboards"
         options={{
           title: "Dashboards",
-          tabBarIcon: ({ focused }) => (
-            <LayoutDashboard
-              className={focused ? "text-black" : "text-slate-500"}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
         name="tag-config"
         options={{
           title: "Tags",
-          tabBarIcon: ({ focused }) => (
-            <SmartphoneNfc
-              className={focused ? "text-black" : "text-slate-500"}
-            />
-          ),
+          headerShown: false,
         }}
       />
     </Tabs>

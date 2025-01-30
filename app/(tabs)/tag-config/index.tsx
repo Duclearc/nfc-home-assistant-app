@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import TagCard, { Tag } from "../../components/tag-config/tag";
 import { Plus } from "~/lib/icons/lucide";
 import { useRouter } from "expo-router";
-import useDashboardsStore from "../../stores/dashboards";
+import useDashboardsStore from "../../../stores/dashboards";
 import { STYLE } from "~/lib/constants";
 
 export default function TagConfigScreen() {
@@ -32,12 +30,11 @@ export default function TagConfigScreen() {
         // />
       ))}
       <Button
-        onPress={() => router.navigate("/dashboard-configurator")}
-        className="w-full"
+        onPress={() => router.navigate("/tag-config/dashboard-configurator")}
+        className="w-full flex-row align-center justify-center gap-3"
       >
-        <Text>
-          <Plus className="mr-2 h-4 w-4" /> Configure new dashboard tag
-        </Text>
+        <Plus className="h-4 w-4 text-white" />
+        <Text>Configure new dashboard tag</Text>
       </Button>
 
       <Button

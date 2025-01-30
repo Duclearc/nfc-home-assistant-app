@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -16,16 +16,15 @@ import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 import { DashboardItem as TDashboardItem } from "~/types/dashboard";
-import SaveDashDialog from "../components/tag-config/save-dashboard-dialog";
-import useHomeAssistantStore from "../stores/home-assistant";
-import { getDevices } from "../lib/home-assistant/client";
+import SaveDashDialog from "~/components/tag-config/save-dashboard-dialog";
+import useHomeAssistantStore from "~/stores/home-assistant";
+import { getDevices } from "~/lib/home-assistant/client";
 
-const DashboardConfigurator = () => {
+export default function DashboardConfigurator() {
   const {
     isLoading: isLoadingHomeAssistant,
     setIsLoading: setIsLoadingHomeAssistant,
     setDevices,
-    devices,
   } = useHomeAssistantStore();
 
   const [dashboardName, setDashboardName] = useState("Test dash 1");
@@ -145,6 +144,4 @@ const DashboardConfigurator = () => {
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
-};
-
-export default DashboardConfigurator;
+}
