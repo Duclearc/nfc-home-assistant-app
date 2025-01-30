@@ -6,10 +6,10 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Home,
   LayoutDashboard,
   Lightbulb,
   Plus,
-  ScanText,
   SmartphoneNfc,
   Target,
   Trash2,
@@ -21,10 +21,10 @@ iconWithClassName(ArrowLeft);
 iconWithClassName(Check);
 iconWithClassName(ChevronDown);
 iconWithClassName(ChevronUp);
+iconWithClassName(Home);
 iconWithClassName(LayoutDashboard);
 iconWithClassName(Lightbulb);
 iconWithClassName(Plus);
-iconWithClassName(ScanText);
 iconWithClassName(SmartphoneNfc);
 iconWithClassName(Target);
 iconWithClassName(Trash2);
@@ -36,10 +36,10 @@ export {
   Check,
   ChevronDown,
   ChevronUp,
+  Home,
   LayoutDashboard,
   Lightbulb,
   Plus,
-  ScanText,
   SmartphoneNfc,
   Target,
   Trash2,

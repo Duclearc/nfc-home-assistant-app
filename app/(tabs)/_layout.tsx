@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@/components/HapticTab";
-import { LayoutDashboard, SmartphoneNfc, ScanText } from "~/lib/icons/lucide";
+import { Home, LayoutDashboard, SmartphoneNfc } from "~/lib/icons/lucide";
 
 export default function TabLayout() {
   return (
@@ -17,6 +17,17 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
+          tabBarIcon: ({ focused }) => (
+            <Home
+              className={focused ? "text-black" : "text-slate-500"}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="dashboards"
+        options={{
+          title: "Dashboards",
           tabBarIcon: ({ focused }) => (
             <LayoutDashboard
               className={focused ? "text-black" : "text-slate-500"}

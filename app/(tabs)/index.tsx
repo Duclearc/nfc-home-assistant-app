@@ -34,6 +34,7 @@ export default function HomeScreen() {
   const runWhenTabOpens = () => {
     setIsScanning(true);
 
+    if (!query) return setIsScanning(false);
     const byteArray = toByteArray(query as string);
     const dashboardProtoData =
       DashboardProto.Dashboard.deserializeBinary(byteArray);
