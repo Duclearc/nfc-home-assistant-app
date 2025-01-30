@@ -1,23 +1,37 @@
+import { toByteArray } from "base64-js";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import {
-  View,
+  ActivityIndicator,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
+  View,
 } from "react-native";
-import { useDataStore } from "~/store/data";
+import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
+import useDashboardsStore from "~/stores/dashboards";
+import { useDataStore } from "~/stores/data";
 
 export function TagReader() {
   // TAG URL → haydan:///tag-data?query=hello&query2=world
-  const params = useLocalSearchParams(); // { query: "hello", query2: "world" }
+  const { query } = useLocalSearchParams(); // { query: "hello", query2: "world" }
 
-  const dataStore = useDataStore();
+  const { isScanning, setIsScanning } = useDataStore();
+  const dashboardStore = useDashboardsStore();
   const runWhenTabOpens = async () => {
-    dataStore.setIsScanning(true);
-    dataStore.setData(params);
-    setTimeout(() => dataStore.setIsScanning(false), 3000);
+    setIsScanning(true);
+    const byteArray = toByteArray(query as string);
+    const dashboardProtoData =
+      DashboardProto.Dashboard.deserializeBinary(byteArray);
+    const dashboard = dashboardProtoData.toObject();
+
+    dashboardStore.addDashboard({
+      url_base: dashboard.url_base!,
+      api_key: dashboard.api_key!,
+      name: dashboard.name!,
+    });
+
+    setTimeout(() => setIsScanning(false), 2000);
   };
 
   // this is what makes the `runWhenTabOpens` function run whenever this tab "opens" (regardless of how you get here, e.g. user press, tag navigation, whatever)
@@ -31,12 +45,12 @@ export function TagReader() {
     <View style={styles.wrapper}>
       <TouchableOpacity
         onPress={runWhenTabOpens}
-        disabled={dataStore.isScanning}
+        disabled={isScanning}
         style={styles.btn}
       >
         <Text style={{ color: "black", fontSize: 20 }}>Scan a Tag</Text>
       </TouchableOpacity>
-      {dataStore.isScanning ? <ActivityIndicator /> : null}
+      {isScanning ? <ActivityIndicator /> : null}
     </View>
   );
 }

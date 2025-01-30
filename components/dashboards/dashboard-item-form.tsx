@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { iconMap } from "~/lib/icons/getIcon";
@@ -23,7 +24,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Text } from "../ui/text";
-import { useState } from "react";
 
 const iconOptions = Object.keys(iconMap).map((icon) => ({
   label: icon,
@@ -67,7 +67,7 @@ const DashboardItemForm = ({
     toast.success("Item added to dashboard");
     addItem({
       name,
-      automationPath: url,
+      automation_path: url,
       icon,
     });
     setOpen(false);

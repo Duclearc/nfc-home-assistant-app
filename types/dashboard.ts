@@ -5,9 +5,9 @@ export type DashboardConfig = {
   /* name of dash/scene/group (e.g. "Wake up", "Cooking", "Movie night") */
   name: string;
   /* base url for automation trigger */
-  urlBase: string;
+  url_base: string;
   /* api key for home assistant */
-  apiKey: string;
+  api_key: string;
 };
 
 export type Dashboard = DashboardConfig & {
@@ -16,7 +16,7 @@ export type Dashboard = DashboardConfig & {
 
 export type DashboardItem = {
   /* automation trigger url */
-  automationPath: string;
+  automation_path: string;
   // datasource: string; possible websocket url for
   icon: IconName;
   name: string;

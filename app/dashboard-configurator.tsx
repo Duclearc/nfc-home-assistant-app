@@ -7,16 +7,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { toast } from "sonner-native";
 import DashboardItem from "~/components/dashboards/dashboard-item";
 import DashboardItemForm from "~/components/dashboards/dashboard-item-form";
+import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Separator } from "~/components/ui/separator";
+import { Text } from "~/components/ui/text";
 import useDashboardsStore from "~/stores/dashboards";
 import { DashboardItem as TDashboardItem } from "~/types/dashboard";
-import { Separator } from "~/components/ui/separator";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { toast } from "sonner-native";
 import SaveDashDialog from "../components/tag-config/save-dashboard-dialog";
 
 const DashboardConfigurator = () => {
@@ -30,12 +30,12 @@ const DashboardConfigurator = () => {
 
   const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([
     {
-      automationPath: "automation/test",
+      automation_path: "automation/test",
       icon: "lightbulb",
       name: "Test item 1",
     },
     {
-      automationPath: "automation/test2",
+      automation_path: "automation/test2",
       icon: "alarm",
       name: "Test item 2",
     },
@@ -107,8 +107,8 @@ const DashboardConfigurator = () => {
             <SaveDashDialog
               dashboard={{
                 name: dashboardName,
-                urlBase: homeAssistantUrl,
-                apiKey: homeAssistantApiKey,
+                url_base: homeAssistantUrl,
+                api_key: homeAssistantApiKey,
                 items: dashboardItems,
               }}
             />
