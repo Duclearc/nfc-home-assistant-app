@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Lightbulb,
   Plus,
+  ScanText,
   SmartphoneNfc,
   Target,
   Trash2,
@@ -23,6 +24,7 @@ iconWithClassName(ChevronUp);
 iconWithClassName(LayoutDashboard);
 iconWithClassName(Lightbulb);
 iconWithClassName(Plus);
+iconWithClassName(ScanText);
 iconWithClassName(SmartphoneNfc);
 iconWithClassName(Target);
 iconWithClassName(Trash2);
@@ -37,6 +39,7 @@ export {
   LayoutDashboard,
   Lightbulb,
   Plus,
+  ScanText,
   SmartphoneNfc,
   Target,
   Trash2,
