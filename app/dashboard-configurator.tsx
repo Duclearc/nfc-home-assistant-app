@@ -17,15 +17,29 @@ import { Separator } from "~/components/ui/separator";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { toast } from "sonner-native";
+import SaveDashDialog from "../components/tag-config/save-dash-dialog";
 
 const DashboardConfigurator = () => {
   const dashboards = useDashboardsStore();
 
-  const [dashboardName, setDashboardName] = useState("");
-  const [homeAssistantUrl, setHomeAssistantUrl] = useState("");
-  const [homeAssistantApiKey, setHomeAssistantApiKey] = useState("");
+  const [dashboardName, setDashboardName] = useState("Test dash 1");
+  const [homeAssistantUrl, setHomeAssistantUrl] = useState(
+    "http://localhost:8123"
+  );
+  const [homeAssistantApiKey, setHomeAssistantApiKey] = useState("1234567890");
 
-  const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([]);
+  const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([
+    {
+      automationPath: "automation/test",
+      icon: "lightbulb",
+      name: "Test item 1",
+    },
+    {
+      automationPath: "automation/test2",
+      icon: "alarm",
+      name: "Test item 2",
+    },
+  ]);
 
   const addItem = (newItem: TDashboardItem) => {
     setDashboardItems([...dashboardItems, newItem]);
@@ -90,9 +104,14 @@ const DashboardConfigurator = () => {
           </View>
 
           <View className="p-4 border-t border-border bg-background">
-            <Button className="w-full" onPress={() => toast.info("Saving...")}>
-              <Text>Save Dashboard</Text>
-            </Button>
+            <SaveDashDialog
+              dashboard={{
+                name: dashboardName,
+                urlBase: homeAssistantUrl,
+                apiKey: homeAssistantApiKey,
+                items: dashboardItems,
+              }}
+            />
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

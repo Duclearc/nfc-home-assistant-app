@@ -5,58 +5,42 @@ import { Text } from "~/components/ui/text";
 import TagCard, { Tag } from "../../components/tag-config/tag";
 import { Plus } from "~/lib/icons/lucide";
 import { useRouter } from "expo-router";
-
-const initialTags = [
-  {
-    id: 1,
-    name: "Wake up",
-    icon: "bed",
-    dashboard: "",
-  },
-  {
-    id: 2,
-    name: "Cooking",
-    icon: "chef-hat",
-    dashboard: "",
-  },
-];
+import useDashboardsStore from "../../stores/dashboards";
 
 export default function TagConfigScreen() {
   const router = useRouter();
-
-  const [tags, setTags] = useState<Tag[]>(initialTags);
-
-  const addTag = () => {
-    const newTag = { id: Date.now(), name: "", icon: "", dashboard: "" };
-    setTags([...tags, newTag]);
-  };
+  const { dashboards } = useDashboardsStore();
 
   const removeTag = (id: number) => {
     setTags(tags.filter((tag) => tag.id !== id));
   };
 
-  const updateTag = (tag: Tag) => {
-    setTags(tags.map((t) => (t.id === tag.id ? tag : t)));
-  };
   return (
-    <ScrollView>
+    <ScrollView className="flex flex-1 h-full">
       <View className="p-4">
-        <Text className="text-2xl font-bold">Configure dashboards</Text>
-        {tags.map((tag) => (
-          <TagCard
-            key={tag.id}
-            tag={tag}
-            updateTag={updateTag}
-            removeTag={removeTag}
-          />
+        <Text className="text-2xl font-bold mb-2">
+          Configure dashboard tags
+        </Text>
+        {dashboards.map((dashboard) => (
+          <View
+            key={dashboard.name}
+            className="w-full p-2 m-2 border border-slate-700 rounded-md"
+          >
+            <Text>{dashboard.name}</Text>
+          </View>
+          // <TagCard
+          //   key={dashboard.id}
+          //   tag={dashboard}
+          //   updateTag={updateTag}
+          //   removeTag={removeTag}
+          // />
         ))}
         <Button
-          onPress={addTag}
+          onPress={() => router.navigate("/dashboard-configurator")}
           className="w-full"
-          onPressIn={() => router.navigate("/dashboard-configurator")}
         >
           <Text>
-            <Plus className="mr-2 h-4 w-4" /> Configure new dashboard
+            <Plus className="mr-2 h-4 w-4" /> Configure new dashboard tag
           </Text>
         </Button>
       </View>

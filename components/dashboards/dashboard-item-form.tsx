@@ -67,7 +67,7 @@ const DashboardItemForm = ({
     toast.success("Item added to dashboard");
     addItem({
       name,
-      url,
+      automationPath: url,
       icon,
     });
     setOpen(false);

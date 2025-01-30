@@ -1,0 +1,3 @@
+const MAX_PAYLOAD_SIZE_BYTES = 860;
+
+export { MAX_PAYLOAD_SIZE_BYTES };

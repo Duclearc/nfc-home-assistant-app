@@ -1,32 +1,44 @@
 import { iconWithClassName } from "./iconWithClassName";
 
 import {
-  Trash2,
-  LayoutDashboard,
-  SmartphoneNfc,
-  Plus,
-  ArrowLeft,
-  Lightbulb,
   AlarmClock,
+  ArrowLeft,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  LayoutDashboard,
+  Lightbulb,
+  Plus,
+  SmartphoneNfc,
   Target,
+  Trash2,
+  X,
 } from "lucide-react-native";
 
-iconWithClassName(Trash2);
-iconWithClassName(LayoutDashboard);
-iconWithClassName(SmartphoneNfc);
-iconWithClassName(Plus);
-iconWithClassName(ArrowLeft);
-iconWithClassName(Lightbulb);
 iconWithClassName(AlarmClock);
+iconWithClassName(ArrowLeft);
+iconWithClassName(Check);
+iconWithClassName(ChevronDown);
+iconWithClassName(ChevronUp);
+iconWithClassName(LayoutDashboard);
+iconWithClassName(Lightbulb);
+iconWithClassName(Plus);
+iconWithClassName(SmartphoneNfc);
 iconWithClassName(Target);
+iconWithClassName(Trash2);
+iconWithClassName(X);
 
 export {
-  Trash2,
-  LayoutDashboard,
-  SmartphoneNfc,
-  Plus,
-  ArrowLeft,
-  Lightbulb,
   AlarmClock,
+  ArrowLeft,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  LayoutDashboard,
+  Lightbulb,
+  Plus,
+  SmartphoneNfc,
   Target,
+  Trash2,
+  X,
 };
