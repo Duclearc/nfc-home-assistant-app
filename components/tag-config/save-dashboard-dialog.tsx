@@ -12,9 +12,8 @@ import { Text } from "../ui/text";
 import { SmartphoneNfc } from "~/lib/icons/lucide";
 import { View } from "react-native";
 import nfcManager from "react-native-nfc-manager";
-import NfcTest from "./nfc-test";
 import { Dashboard } from "../../types/dashboard";
-import { writeDashToTag } from "../../lib/nfc/write-dash";
+import { writeDashboardToTag } from "../../lib/nfc/write-dashboard";
 import { toast } from "sonner-native";
 import useDashboardsStore from "../../stores/dashboards";
 
@@ -27,11 +26,17 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
 
   const attemptWrite = async () => {
     console.log("Attempting to write to NFC tag...");
-    const response = await writeDashToTag(dashboard);
-    console.log(response);
-    setOpen(false);
-    toast.success("Dashboard saved to NFC tag");
-    dashboards.addDashboard(dashboard);
+    const response = await writeDashboardToTag(dashboard);
+
+    if (response.success) {
+      console.log(response);
+      setOpen(false);
+      toast.success("Dashboard saved to NFC tag");
+      dashboards.addDashboard(dashboard);
+    } else {
+      setOpen(false);
+      toast.error(response.error);
+    }
   };
 
   useEffect(() => {

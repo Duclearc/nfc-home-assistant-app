@@ -17,7 +17,7 @@ import { Separator } from "~/components/ui/separator";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { toast } from "sonner-native";
-import SaveDashDialog from "../components/tag-config/save-dash-dialog";
+import SaveDashDialog from "../components/tag-config/save-dashboard-dialog";
 
 const DashboardConfigurator = () => {
   const dashboards = useDashboardsStore();

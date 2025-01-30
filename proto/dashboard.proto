@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dashboard;
+
+message Dashboard {
+  string name = 1;
+  string url_base = 2;
+  string api_key = 3;
+  repeated DashboardItem items = 4;
+}
+
+message DashboardItem {
+  string name = 1;
+  string automation_path = 2;
+  string icon = 3;
+}

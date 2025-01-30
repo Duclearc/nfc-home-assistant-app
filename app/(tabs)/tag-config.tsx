@@ -9,11 +9,7 @@ import useDashboardsStore from "../../stores/dashboards";
 
 export default function TagConfigScreen() {
   const router = useRouter();
-  const { dashboards } = useDashboardsStore();
-
-  const removeTag = (id: number) => {
-    setTags(tags.filter((tag) => tag.id !== id));
-  };
+  const { dashboards, clearDashboards } = useDashboardsStore();
 
   return (
     <ScrollView className="flex flex-1 h-full">
@@ -42,6 +38,14 @@ export default function TagConfigScreen() {
           <Text>
             <Plus className="mr-2 h-4 w-4" /> Configure new dashboard tag
           </Text>
+        </Button>
+
+        <Button
+          variant="outline"
+          className="my-3"
+          onPress={() => clearDashboards()}
+        >
+          <Text>[debug] Clear dashboards</Text>
         </Button>
       </View>
     </ScrollView>
