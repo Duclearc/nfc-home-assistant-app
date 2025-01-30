@@ -7,50 +7,29 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import NfcManager, { NfcTech, Ndef } from "react-native-nfc-manager";
 import { useDataStore } from "~/store/data";
 
-// Pre-step, call this before any NFC operations
-NfcManager.start();
-
 export function TagReader() {
+  // TAG URL → haydan:///tag-data?query=hello&query2=world
+  const params = useLocalSearchParams(); // { query: "hello", query2: "world" }
+
   const dataStore = useDataStore();
-  const params = useLocalSearchParams();
-  const readNdef = async () => {
-    dataStore.setData(undefined);
+  const runWhenTabOpens = async () => {
     dataStore.setIsScanning(true);
-    try {
-      // // register for the NFC tag with NDEF in it
-      // const res = await NfcManager.requestTechnology(NfcTech.Ndef);
-      // // the resolved tag object will contain `ndefMessage` property
-      // const tag = await NfcManager.getTag();
-
-      // const payload = tag?.ndefMessage[1].payload;
-      // let decodePayload = Ndef.uri.decodePayload(payload);
-      // decodePayload = decodePayload.startsWith("{")
-      //   ? decodePayload
-      //   : `{${decodePayload}`;
-      // const { data } = JSON.parse(decodePayload);
-
-      dataStore.setData(params);
-    } catch (ex) {
-      console.warn("Oops!", ex);
-    } finally {
-      // stop the nfc scanning
-      NfcManager.cancelTechnologyRequest();
-      dataStore.setIsScanning(false);
-    }
+    dataStore.setData(params);
   };
 
+  // this is what makes the `runWhenTabOpens` function run whenever this tab "opens" (regardless of how you get here, e.g. user press, tag navigation, whatever)
   const navigation = useNavigation();
   useEffect(
-    () => navigation.addListener("focus", () => readNdef()),
+    () => navigation.addListener("focus", runWhenTabOpens),
     [navigation]
   );
+
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
-        onPress={readNdef}
+        onPress={runWhenTabOpens}
         disabled={dataStore.isScanning}
         style={styles.btn}
       >

@@ -9,7 +9,11 @@ export default function TagConfigScreen() {
     <View style={{ padding: 10, flex: 1 }}>
       <ScrollView>
         <TagReader />
-        <Text style={{ color: "black", fontSize: 20 }}>{JSON.stringify(dataStore.data)}</Text>
+        {!dataStore.isScanning ? (
+          <Text style={{ color: "black", fontSize: 20 }}>
+            {JSON.stringify(dataStore.data)}
+          </Text>
+        ) : null}
       </ScrollView>
     </View>
   );
