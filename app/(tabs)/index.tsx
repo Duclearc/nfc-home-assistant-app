@@ -8,6 +8,7 @@ import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 import { SmartphoneNfc } from "~/lib/icons/lucide";
 import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
+import useDashboardsStore from "~/stores/dashboards";
 import { useDataStore } from "~/stores/data";
 import { Dashboard, IconName } from "~/types/dashboard";
 
@@ -30,26 +31,32 @@ export default function HomeScreen() {
   const { query } = useLocalSearchParams(); // { query: "hello", query2: "world" }
 
   const { isScanning, setIsScanning } = useDataStore();
+  const { addDashboard } = useDashboardsStore();
 
   const runWhenTabOpens = () => {
     setIsScanning(true);
 
     if (!query) return setIsScanning(false);
+    console.log({ query });
+
     const byteArray = toByteArray(query as string);
     const dashboardProtoData =
       DashboardProto.Dashboard.deserializeBinary(byteArray);
-    const dashboard = dashboardProtoData.toObject();
+    const dashboardData = dashboardProtoData.toObject();
 
-    setCurrentDash({
-      url_base: dashboard.url_base!,
-      api_key: dashboard.api_key!,
-      name: dashboard.name!,
-      items: dashboard.items!.map((i) => ({
+    const dashboard: Dashboard = {
+      url_base: dashboardData.url_base!,
+      api_key: dashboardData.api_key!,
+      name: dashboardData.name!,
+      items: dashboardData.items!.map((i) => ({
         name: i.name!,
         automation_path: i.automation_path!,
         icon: i.icon! as IconName,
       })),
-    });
+    };
+
+    addDashboard(dashboard);
+    setCurrentDash(dashboard);
   };
 
   useEffect(() => {

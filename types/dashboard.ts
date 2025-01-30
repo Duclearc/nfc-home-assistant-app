@@ -1,4 +1,4 @@
-export type IconName = "lightbulb" | "alarm";
+export type IconName  = "lightbulb" | "alarm";
 
 export type DashboardConfig = {
   //   id: string; // maybe not necessary as not being stored in a DB. Could leave out to save space.

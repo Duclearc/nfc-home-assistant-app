@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { DashboardConfig } from "~/types/dashboard";
+import { Dashboard } from "~/types/dashboard";
 import { secureStorage } from "./secure-storage";
 
 type DashboardStore = {
-  dashboards: Array<DashboardConfig>;
-  addDashboard: (dashboard: DashboardConfig) => void;
+  dashboards: Array<Dashboard>;
+  addDashboard: (dashboard: Dashboard) => void;
   clearDashboards: () => void;
 };
 

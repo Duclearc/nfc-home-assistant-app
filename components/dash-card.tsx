@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   Card,
   CardContent,
@@ -7,20 +8,33 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
+import { STYLE } from "~/lib/constants";
 
-const DashCard = () => {
+const DashCard = ({
+  title,
+  description,
+  content,
+  footer,
+}: {
+  title: string;
+  description: string;
+  content: ReactNode;
+  footer?: string;
+}) => {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Card Title!</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle className={STYLE.title}>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Text>Card Content</Text>
+        {typeof content === "string" ? <Text>{content}</Text> : content}
       </CardContent>
-      <CardFooter>
-        <Text>Card Footer</Text>
-      </CardFooter>
+      {footer ? (
+        <CardFooter>
+          <Text>{footer}</Text>
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };
