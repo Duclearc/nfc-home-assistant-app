@@ -61,8 +61,9 @@ export const getDevices = async (url: string, key: string) => {
     const devicesWithEntities = allData.map((device: any) => ({
       id: device.deviceId,
       name: device.name_user || device.name,
-      entities: device.entities.filter(
-        (entity: any) => entity.includes("light.") || entity.includes("switch.")
+      //   entities: device.entities,
+      entities: device.entities.filter((entity: any) =>
+        entity.includes("light.")
       ),
     }));
 
@@ -71,6 +72,8 @@ export const getDevices = async (url: string, key: string) => {
     );
 
     console.log(`Fetched ${filteredDevices.length} devices from HA`);
+
+    console.log(JSON.stringify(filteredDevices, null, 2));
 
     return filteredDevices;
   } catch (error) {

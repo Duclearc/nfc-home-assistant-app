@@ -36,24 +36,14 @@ const DashboardConfigurator = () => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhOTI5OWQwNTE1OTU0MjNjOWIxNjIzODZhOWU2YzMyYSIsImlhdCI6MTczODIzNTM2NiwiZXhwIjoyMDUzNTk1MzY2fQ.hq8xzth-_h0nQ3b2D8nyqWQec9l1lWyqzBNkrxvVHX0"
   );
 
-  const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([
-    {
-      entity: "automation/test",
-      icon: "lightbulb",
-      name: "Test item 1",
-    },
-    {
-      entity: "automation/test2",
-      icon: "alarm",
-      name: "Test item 2",
-    },
-  ]);
+  const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([]);
 
   const addItem = (newItem: TDashboardItem) => {
     setDashboardItems([...dashboardItems, newItem]);
   };
 
   const handleGetDevices = async () => {
+    setIsLoadingHomeAssistant(true);
     if (!homeAssistantUrl || !homeAssistantApiKey) {
       toast.error("Please enter a Home Assistant URL and API key");
       return;
@@ -117,17 +107,14 @@ const DashboardConfigurator = () => {
 
             <View>
               <Text className="text-2xl font-light mb-4">Dashboard items</Text>
-              {isLoadingHomeAssistant ? (
-                <Text>Loading data from Home Assistant...</Text>
-              ) : (
-                <Button
-                  variant="outline"
-                  className="w-full my-2"
-                  onPress={handleGetDevices}
-                >
-                  <Text>Get devices from Home Assistant</Text>
-                </Button>
-              )}
+              <Button
+                disabled={isLoadingHomeAssistant}
+                variant="outline"
+                className="w-full my-2"
+                onPress={handleGetDevices}
+              >
+                <Text>Get devices from Home Assistant</Text>
+              </Button>
             </View>
 
             <View className="flex flex-row flex-wrap justify-between mb-2">
@@ -139,6 +126,9 @@ const DashboardConfigurator = () => {
             </View>
 
             <DashboardItemForm addItem={addItem} />
+            {isLoadingHomeAssistant && (
+              <Text>Loading data from Home Assistant...</Text>
+            )}
           </View>
 
           <View className="p-4 border-t border-border bg-background">

@@ -14,7 +14,7 @@ const DashboardItem = ({
       <CardHeader>
         <CardTitle className="text-sm">{dashItem.name}</CardTitle>
       </CardHeader>
-      <CardContent>{getIcon(dashItem.icon)}</CardContent>
+      <CardContent>{getIcon(dashItem.entity)}</CardContent>
     </Card>
   );
 };

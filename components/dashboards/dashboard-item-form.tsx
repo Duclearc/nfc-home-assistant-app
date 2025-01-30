@@ -31,15 +31,6 @@ const DashboardItemForm = ({
 
   const [entity, setEntity] = useState("");
   const [name, setName] = useState("");
-  const [icon, setIcon] = useState<IconName | undefined>();
-
-  const insets = useSafeAreaInsets();
-  const contentInsets = {
-    top: insets.top,
-    bottom: insets.bottom,
-    left: 12,
-    right: 12,
-  };
 
   function handleAddItem() {
     if (!name) {
@@ -50,16 +41,11 @@ const DashboardItemForm = ({
       toast.error("Please select an entity to control");
       return;
     }
-    if (!icon) {
-      toast.error("Please select an icon");
-      return;
-    }
 
     toast.success("Item added to dashboard");
     addItem({
       name,
       entity: entity,
-      icon,
     });
     setOpen(false);
   }
@@ -93,10 +79,12 @@ const DashboardItemForm = ({
           <Picker
             selectedValue={entity}
             onValueChange={(value) => {
+              console.log(value);
               setEntity(value);
               setName(
-                iconOptions.find((option) => option.value === value)?.label ||
-                  ""
+                iconOptions
+                  .find((option) => option.value === value)
+                  ?.label.split(":")[0] || "?"
               );
             }}
           >
@@ -110,7 +98,7 @@ const DashboardItemForm = ({
           </Picker>
 
           <Label htmlFor="item-name">Name</Label>
-          <Input placeholder="Item name" onChangeText={setName} />
+          <Input placeholder="Item name" onChangeText={setName} value={name} />
 
           <Label htmlFor="item-url">Device entity</Label>
         </DialogHeader>
