@@ -10,6 +10,8 @@ export const readDashboardFromTag = async () => {
     // the resolved tag object will contain `ndefMessage` property
     const tag = await nfcManager.getTag();
 
+    console.log("Tag found");
+
     if (!tag) throw new Error("No tag found");
 
     const urlUnit8 = tag.ndefMessage[0].payload; // integer array
@@ -17,14 +19,23 @@ export const readDashboardFromTag = async () => {
     const message = Ndef.uri.decodePayload(
       urlUnit8 as unknown as Uint8Array<ArrayBufferLike>
     );
+    console.log("Payload decoded");
 
-    const encodedDash = message.split("=")[1];
+    console.log("Message", message);
+
+    const encodedDash = message.split("haydan:///?query=")[1];
 
     if (!encodedDash) throw new Error("No encoded dash found");
 
     const byteArray = toByteArray(encodedDash);
 
-    return DashboardProto.Dashboard.deserialize(byteArray).toObject();
+    console.log("Byte array created");
+
+    const deserialised = DashboardProto.Dashboard.deserialize(byteArray);
+
+    console.log("Deserialised");
+
+    return deserialised.toObject();
   } catch (ex) {
     console.error(ex);
     if (ex instanceof Error) {

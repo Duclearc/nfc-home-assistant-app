@@ -41,9 +41,10 @@ const DashboardItemForm = ({
     }
 
     toast.success("Item added to dashboard");
+    console.log("Adding item to dashboard", name, entity);
     addItem({
       name,
-      entity: entity,
+      entity,
     });
     setOpen(false);
   }

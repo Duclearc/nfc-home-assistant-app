@@ -15,7 +15,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
   );
 
   try {
-    // console.log(JSON.stringify(dashboard, null, 2));
+    console.log(JSON.stringify(dashboard, null, 2));
 
     const dashboardProto = DashboardProto.Dashboard.fromObject({
       ...dashboard,

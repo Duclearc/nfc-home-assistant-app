@@ -134,7 +134,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 pt-10 px-5 flex-col justify-between">
-      {/* <Text>{JSON.stringify(currentDash?.items, null, 2)}</Text> */}
+      {/* <Text>{JSON.stringify(currentDash, null, 2)}</Text> */}
       {isScanning ? <ActivityIndicator /> : null}
       {!currentDash ? (
         <ScanView />
@@ -143,9 +143,9 @@ export default function HomeScreen() {
           <Text className="text-3xl font-light">{currentDash.name}</Text>
           <Separator className="my-2" />
           <ScrollView>
-            {currentDash.items.map((item) => (
+            {currentDash.items.map((item, index) => (
               <Pressable
-                key={item.entity}
+                key={item.entity + index}
                 onPress={async () => {
                   setServiceLoading(item.entity);
                   const success = await triggerService(
