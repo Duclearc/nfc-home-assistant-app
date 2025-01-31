@@ -1,6 +1,6 @@
 import { toByteArray } from "base64-js";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "~/components/ui/button";
@@ -34,18 +34,30 @@ export default function HomeScreen() {
   const { query } = useLocalSearchParams(); // { query: "hello", query2: "world" }
 
   const { isScanning, setIsScanning } = useDataStore();
-  const { addDashboard } = useDashboardsStore();
 
-  const runWhenTabOpens = () => {
-    console.log("Running when tab opens! ", query);
+  useEffect(() => {
+    runWhenTabOpens();
+  }, [query]);
+
+  const runWhenTabOpens = async () => {
     setIsScanning(true);
+    console.log("Running when tab opens! ", query);
 
-    if (!query) return setIsScanning(false);
+    // Wait to prevent race condition with setting getting the query in the local search params
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    if (!query) {
+      console.error("No query found!");
+      setCurrentDash(undefined);
+      return setIsScanning(false);
+    }
 
     const byteArray = toByteArray(query as string);
     const dashboardProtoData =
       DashboardProto.Dashboard.deserializeBinary(byteArray);
     const dashboardData = dashboardProtoData.toObject();
+
+    console.log("Dashboard data: ", JSON.stringify(dashboardData, null, 2));
 
     const dashboard: Dashboard = {
       url_base: dashboardData.url_base!,
@@ -56,8 +68,6 @@ export default function HomeScreen() {
         entity: i.entity!,
       })),
     };
-
-    addDashboard(dashboard);
     setCurrentDash(dashboard);
   };
 
@@ -66,14 +76,15 @@ export default function HomeScreen() {
   }, [currentDash]);
 
   // this is what makes the `runWhenTabOpens` function run whenever this tab "opens" (regardless of how you get here, e.g. user press, tag navigation, whatever)
-  const navigation = useNavigation();
-  useEffect(
-    () => navigation.addListener("state", runWhenTabOpens),
-    [navigation]
-  );
+  // const navigation = useNavigation();
+  // useEffect(
+  //   () => navigation.addListener("state", runWhenTabOpens),
+  //   [navigation]
+  // );
 
   return (
     <SafeAreaView className="flex-1 py-10 px-5">
+      {/* <Text>Query: {query}</Text> */}
       {isScanning ? <ActivityIndicator /> : null}
       {!currentDash ? (
         <ScanView />

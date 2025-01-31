@@ -1,6 +1,4 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { secureStorage } from "./secure-storage";
 
 type HomeAssistantStore = {
   isLoading: boolean;

@@ -60,13 +60,14 @@ const DashboardItemForm = ({
     .flat();
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} className="w-[48%]">
       <DialogTrigger asChild>
         <Button
+          variant="ghost"
           disabled={isLoadingHomeAssistant || devices.length === 0}
-          className="w-full flex flex-row items-center justify-center"
+          className="w-full min-h-32 flex flex-row items-center justify-center border border-dashed bg-gray-200 border-gray-500"
         >
-          <Plus className="text-white w-3 h-3 mr-2" />
+          <Plus className="text-slate-700 w-3 h-3" />
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[90vw] max-w-[500px] sm:w-full">

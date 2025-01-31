@@ -73,7 +73,7 @@ export const getDevices = async (url: string, key: string) => {
 
     console.log(`Fetched ${filteredDevices.length} devices from HA`);
 
-    console.log(JSON.stringify(filteredDevices, null, 2));
+    // console.log(JSON.stringify(filteredDevices, null, 2));
 
     return filteredDevices;
   } catch (error) {
@@ -106,6 +106,8 @@ export const triggerService = async (
       entity_id: entity,
     }),
   });
+
+  console.log("Response", res);
 
   if (res.status !== 200) {
     console.error("Failed to trigger service: ", res);

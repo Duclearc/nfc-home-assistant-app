@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import nfcManager from "react-native-nfc-manager";
+import { toast } from "sonner-native";
 import { SmartphoneNfc } from "~/lib/icons/lucide";
-import useDashboardsStore from "~/stores/dashboards";
-import { Dashboard } from "~/types/dashboard";
+import { DashboardConfig } from "~/types/dashboard";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -14,30 +14,47 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Text } from "../ui/text";
+import { readDashboardFromTag } from "../../lib/nfc/read-dashboard";
 
 // Pre-step, call this before any NFC operations
 nfcManager.start();
 
-const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
+const GetTagConfigDialog = ({
+  saveConfig,
+}: {
+  saveConfig: (config: Pick<DashboardConfig, "api_key" | "url_base">) => void;
+}) => {
   const [open, setOpen] = useState(false);
-  const dashboards = useDashboardsStore();
 
   const attemptRead = async () => {
-    console.log("Attempting to read from NFC tag...");
-    // todo
+    const dashboard = await readDashboardFromTag();
+
+    if (!dashboard) {
+      toast.error("No dashboard found");
+      return;
+    }
+
+    saveConfig({
+      api_key: dashboard.api_key!,
+      url_base: dashboard.url_base!,
+    });
+
+    setOpen(false);
   };
 
   useEffect(() => {
     if (open) {
       attemptRead();
+    } else {
+      nfcManager.cancelTechnologyRequest();
     }
   }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">
-          <Text>Get config from NFC Tag</Text>
+        <Button>
+          <Text>Get config from another tag</Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -61,4 +78,4 @@ const SaveDashDialog = ({ dashboard }: { dashboard: Dashboard }) => {
   );
 };
 
-export default SaveDashDialog;
+export default GetTagConfigDialog;

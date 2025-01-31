@@ -9,7 +9,7 @@ const DashboardItem = ({
   dashItem: TDashboardItem;
 }) => {
   return (
-    <Card className="flex-col items-center justify-between">
+    <Card className="flex-col items-center justify-between min-h-32">
       <CardHeader>
         <CardTitle className="text-sm">{dashItem.name}</CardTitle>
       </CardHeader>

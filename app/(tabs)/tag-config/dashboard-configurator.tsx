@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   TouchableWithoutFeedback,
   View,
@@ -15,24 +16,33 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
-import { DashboardItem as TDashboardItem } from "~/types/dashboard";
+import {
+  DashboardConfig,
+  DashboardItem as TDashboardItem,
+} from "~/types/dashboard";
 import SaveDashDialog from "~/components/tag-config/save-dashboard-dialog";
 import useHomeAssistantStore from "~/stores/home-assistant";
 import { getDevices } from "~/lib/home-assistant/client";
+import GetTagConfigDialog from "../../../components/tag-config/get-config-dialog";
 
 export default function DashboardConfigurator() {
   const {
     isLoading: isLoadingHomeAssistant,
     setIsLoading: setIsLoadingHomeAssistant,
     setDevices,
+    devices,
   } = useHomeAssistantStore();
 
-  const [dashboardName, setDashboardName] = useState("Test dash 1");
+  const [dashboardName, setDashboardName] = useState(
+    `Test dash ${new Date().toLocaleString()}`
+  );
   const [homeAssistantUrl, setHomeAssistantUrl] = useState(
-    process.env.EXPO_PUBLIC_HOME_ASSISTANT_URL || ""
+    ""
+    // process.env.EXPO_PUBLIC_HOME_ASSISTANT_URL || ""
   );
   const [homeAssistantApiKey, setHomeAssistantApiKey] = useState(
-    process.env.EXPO_PUBLIC_HOME_ASSISTANT_API_KEY || ""
+    ""
+    // process.env.EXPO_PUBLIC_HOME_ASSISTANT_API_KEY || ""
   );
 
   const [dashboardItems, setDashboardItems] = useState<TDashboardItem[]>([]);
@@ -41,15 +51,27 @@ export default function DashboardConfigurator() {
     setDashboardItems([...dashboardItems, newItem]);
   };
 
-  const handleGetDevices = async () => {
+  const removeItem = (item: TDashboardItem) => {
+    setDashboardItems(dashboardItems.filter((i) => i.name !== item.name));
+  };
+
+  const saveConfig = (
+    config: Pick<DashboardConfig, "api_key" | "url_base">
+  ) => {
+    setHomeAssistantUrl(config.url_base);
+    setHomeAssistantApiKey(config.api_key);
+    handleGetDevices(config.url_base, config.api_key);
+  };
+
+  const handleGetDevices = async (url: string, key: string) => {
     setIsLoadingHomeAssistant(true);
-    if (!homeAssistantUrl || !homeAssistantApiKey) {
+    if (!url || !key) {
       toast.error("Please enter a Home Assistant URL and API key");
       return;
     }
 
     try {
-      const devices = await getDevices(homeAssistantUrl, homeAssistantApiKey);
+      const devices = await getDevices(url, key);
       setDevices(devices);
     } catch (error) {
       console.error(error);
@@ -58,6 +80,19 @@ export default function DashboardConfigurator() {
       setIsLoadingHomeAssistant(false);
     }
   };
+
+  console.log(
+    JSON.stringify(
+      {
+        dashboardName,
+        homeAssistantUrl,
+        homeAssistantApiKey,
+        dashboardItems,
+      },
+      null,
+      2
+    )
+  );
 
   return (
     <KeyboardAvoidingView
@@ -70,65 +105,77 @@ export default function DashboardConfigurator() {
           keyboardShouldPersistTaps="handled"
         >
           <View className="p-4 flex-1">
-            <Label htmlFor="dashboard-name">Dashboard name</Label>
+            <Label className="mb-2" htmlFor="dashboard-name">
+              1. Enter dashboard name
+            </Label>
             <Input
+              id="dashboard-name"
               placeholder="Waking up"
               value={dashboardName}
               onChangeText={setDashboardName}
             />
 
-            <Separator className="my-4" />
+            <Separator className="my-6 bg-slate-500" />
 
-            <Label htmlFor="home-assistant-url">Home Assistant URL</Label>
+            <Label className="mb-2">2. Configure Home Assistant</Label>
+
+            <View className="mb-4">
+              <GetTagConfigDialog saveConfig={saveConfig} />
+            </View>
+
+            <Separator className="my-2" />
+
+            <Text className="text-sm text-muted-foreground mb-2">
+              Or enter manually
+            </Text>
             <Input
-              placeholder="Add URL here"
+              placeholder="Home assistant URL"
               value={homeAssistantUrl}
               onChangeText={setHomeAssistantUrl}
               className="mb-4"
             />
-            <Label htmlFor="home-assistant-api-key">
-              Home Assistant API Key
-            </Label>
             <Input
-              placeholder="Add key here"
+              placeholder="Home assistant API key"
               value={homeAssistantApiKey}
               onChangeText={setHomeAssistantApiKey}
             />
             <Button
-              variant="ghost"
-              className="mt-2"
-              onPress={() => toast.info("Coming soon")}
+              variant="outline"
+              className="my-2"
+              onPress={() =>
+                handleGetDevices(homeAssistantUrl, homeAssistantApiKey)
+              }
             >
-              <Text>Get this config from another dashboard</Text>
+              <Text>Get devices</Text>
             </Button>
 
-            <Separator className="my-4" />
+            <Separator className="my-6 bg-slate-500" />
 
-            <View>
-              <Text className="text-2xl font-light mb-4">Dashboard items</Text>
-              <Button
-                disabled={isLoadingHomeAssistant}
-                variant="outline"
-                className="w-full my-2"
-                onPress={handleGetDevices}
-              >
-                <Text>Get devices from Home Assistant</Text>
-              </Button>
-            </View>
+            <Label className="mb-2">3. Configure dashboard items</Label>
 
-            <View className="flex flex-row flex-wrap justify-between mb-2">
+            <View className="flex flex-row flex-wrap justify-between mb-2 w-full min-h-36 gap-4">
               {dashboardItems.map((item) => (
-                <View key={item.name} className="w-[49%]">
+                <Pressable
+                  key={item.name}
+                  className="w-[48%]"
+                  onPress={() => removeItem(item)}
+                >
                   <DashboardItem isEditable={false} dashItem={item} />
-                </View>
+                </Pressable>
               ))}
-            </View>
 
-            <DashboardItemForm addItem={addItem} />
-            {isLoadingHomeAssistant && (
-              <Text>Loading data from Home Assistant...</Text>
-            )}
+              {devices.length > 0 && homeAssistantUrl && homeAssistantApiKey ? (
+                <DashboardItemForm addItem={addItem} />
+              ) : (
+                <Text className="text-muted-foreground">
+                  Configure Home Assistant to add items to the dashboard
+                </Text>
+              )}
+            </View>
           </View>
+          {isLoadingHomeAssistant && (
+            <Text>Loading data from Home Assistant...</Text>
+          )}
 
           <View className="p-4 border-t border-border bg-background">
             <SaveDashDialog

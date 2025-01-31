@@ -14,31 +14,22 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
   );
 
   try {
-    const jsonString = JSON.stringify(dashboard);
+    console.log(JSON.stringify(dashboard, null, 2));
 
     const dashboardProto = DashboardProto.Dashboard.fromObject({
       ...dashboard,
       api_key: dashboard.api_key,
       url_base: dashboard.url_base,
-      items: dashboard.items.map((i) => ({
-        ...i,
-        entity: i.entity,
-      })),
     });
 
     const dashboardBinary = dashboardProto.serializeBinary();
     const base64Data = fromByteArray(dashboardBinary);
-
-    const jsonStringSize = new TextEncoder().encode(jsonString).length;
-    const base64DataSize = new TextEncoder().encode(base64Data).length;
-
-    // LOOK HERE
     const url = `${config.scheme}:///?query=${base64Data}`;
-    // const url = `${config.scheme}:///?query=${base64Data}`;
 
-    console.log(`JSON string size: ${jsonStringSize} bytes`);
+    // const jsonStringSize = new TextEncoder().encode(jsonString).length;
+    const base64DataSize = new TextEncoder().encode(base64Data).length;
     console.log(`Base64 data size: ${base64DataSize} bytes`);
-
+    // console.log(`JSON string size: ${jsonStringSize} bytes`);
     if (base64DataSize > MAX_PAYLOAD_SIZE_BYTES) {
       throw new Error(
         `Dashboard data exceeds maximum size of ${MAX_PAYLOAD_SIZE_BYTES} bytes`

@@ -5,6 +5,7 @@ import { Plus } from "~/lib/icons/lucide";
 import { useRouter } from "expo-router";
 import useDashboardsStore from "../../../stores/dashboards";
 import { STYLE } from "~/lib/constants";
+import { Separator } from "../../../components/ui/separator";
 
 export default function TagConfigScreen() {
   const router = useRouter();
@@ -12,23 +13,21 @@ export default function TagConfigScreen() {
 
   return (
     <ScrollView className={STYLE.wrapper}>
-      <Text className={`${STYLE.title} text-3xl mb-3`}>
-        Configure dashboard tags
+      <Text className={`${STYLE.title} text-3xl mb-3`}>My dashboard tags</Text>
+      <Text className="text-sm text-muted-foreground">
+        {dashboards.length} tag(s) saved
       </Text>
       {dashboards.map((dashboard) => (
         <View
           key={dashboard.name}
-          className="w-full p-2 my-2 border border-slate-700 rounded-md"
+          className="w-full p-2 py-4 my-2 rounded-md bg-white shadow-md"
         >
-          <Text>{dashboard.name}</Text>
+          <Text className="text-lg font-light">{dashboard.name}</Text>
         </View>
-        // <TagCard
-        //   key={dashboard.id}
-        //   tag={dashboard}
-        //   updateTag={updateTag}
-        //   removeTag={removeTag}
-        // />
       ))}
+
+      <Separator className="my-6 bg-slate-500" />
+
       <Button
         onPress={() => router.navigate("/tag-config/dashboard-configurator")}
         className="w-full flex-row align-center justify-center gap-3"

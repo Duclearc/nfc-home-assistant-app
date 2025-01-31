@@ -14,6 +14,7 @@ import {
   Target,
   Trash2,
   X,
+  FileQuestion,
 } from "lucide-react-native";
 
 iconWithClassName(AlarmClock);
@@ -22,6 +23,7 @@ iconWithClassName(Check);
 iconWithClassName(ChevronDown);
 iconWithClassName(ChevronUp);
 iconWithClassName(Home);
+iconWithClassName(FileQuestion);
 iconWithClassName(LayoutDashboard);
 iconWithClassName(Lightbulb);
 iconWithClassName(Plus);
@@ -33,6 +35,7 @@ iconWithClassName(X);
 export {
   AlarmClock,
   ArrowLeft,
+  FileQuestion,
   Check,
   ChevronDown,
   ChevronUp,
