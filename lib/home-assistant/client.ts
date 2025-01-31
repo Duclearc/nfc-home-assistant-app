@@ -62,8 +62,8 @@ export const getDevices = async (url: string, key: string) => {
       id: device.deviceId,
       name: device.name_user || device.name,
       //   entities: device.entities,
-      entities: device.entities.filter((entity: any) =>
-        entity.includes("light.")
+      entities: device.entities.filter(
+        (entity: any) => entity.includes("light.") || entity.includes("motion")
       ),
     }));
 

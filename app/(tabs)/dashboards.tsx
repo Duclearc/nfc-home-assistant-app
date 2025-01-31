@@ -3,6 +3,7 @@ import { FlatList, Text, View } from "react-native";
 import DashCard from "~/components/dash-card";
 import { STYLE } from "~/lib/constants";
 import useDashboardsStore from "~/stores/dashboards";
+import { getIcon } from "../../lib/icons/getIcon";
 
 export default function Dashboards() {
   const { dashboards } = useDashboardsStore();
@@ -22,7 +23,7 @@ export default function Dashboards() {
                   keyExtractor={(item) => item.entity}
                   renderItem={({ item }) => (
                     <View className="flex-row gap-2 my-1">
-                      <Lightbulb className="text-black" />
+                      {getIcon(item.entity)}
                       <Text className="text-lg">{item.name}</Text>
                     </View>
                   )}

@@ -1,4 +1,28 @@
-export const createWebsocket = () => {
+type EventMessage = {
+  type: "event";
+  event?: {
+    event_type?: string;
+    data?: {
+      entity_id?: string;
+      new_state?: {
+        entity_id?: string;
+        state?: string; // value (12°C, 50%, on/off)
+        attributes?: {
+          friendly_name?: string;
+          device_class?: string; // "temperature", "humidity"
+          unit_of_measurement?: string; // "°C" , "%"
+          state_class?: string; // "measurement"
+        };
+      };
+    };
+  };
+};
+
+export const createWebsocket = (
+  key: string,
+  url: string,
+  callback: (event: EventMessage) => void
+) => {
   const ws = new WebSocket(
     `${process.env.EXPO_PUBLIC_HOME_ASSISTANT_URL}/api/websocket`
   );
@@ -9,7 +33,6 @@ export const createWebsocket = () => {
 
   ws.onmessage = (e) => {
     const message = JSON.parse(e.data);
-    console.log("MESSAGE: ", JSON.stringify(message, null, 2));
 
     if (message.type === "auth_required") {
       ws.send(
@@ -35,6 +58,12 @@ export const createWebsocket = () => {
         })
       );
     }
+
+    if (message.type === "event") {
+      const eventMessage = message as EventMessage;
+
+      callback(eventMessage);
+    }
   };
 
   ws.onerror = (e) => {
@@ -50,4 +79,6 @@ export const createWebsocket = () => {
     // connection closed
     console.log(e.code, e.reason);
   };
+
+  return ws;
 };

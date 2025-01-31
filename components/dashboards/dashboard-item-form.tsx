@@ -1,9 +1,8 @@
+import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
-import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { Plus } from "~/lib/icons/lucide";
-import { IconName, DashboardItem as TDashboardItem } from "~/types/dashboard";
+import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import useHomeAssistantStore from "../../stores/home-assistant";
 import { Button } from "../ui/button";
 import {
@@ -18,7 +17,6 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Text } from "../ui/text";
-import { Picker } from "@react-native-picker/picker";
 
 const DashboardItemForm = ({
   addItem,
@@ -54,10 +52,12 @@ const DashboardItemForm = ({
     .map((device) =>
       device.entities.map((entity) => ({
         label: `${device.name}: ${entity.split(".")[1]}`,
+        // label: `${device.name}: ${entity.split(".")[1]}`,
         value: entity,
       }))
     )
-    .flat();
+    .flat()
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <Dialog open={open} onOpenChange={setOpen} className="w-[48%]">
@@ -65,7 +65,7 @@ const DashboardItemForm = ({
         <Button
           variant="ghost"
           disabled={isLoadingHomeAssistant || devices.length === 0}
-          className="w-full min-h-32 flex flex-row items-center justify-center border border-dashed bg-gray-200 border-gray-500"
+          className="w-full min-h-36 flex flex-row items-center justify-center border border-dashed bg-gray-200 border-gray-500"
         >
           <Plus className="text-slate-700 w-3 h-3" />
         </Button>
@@ -91,6 +91,9 @@ const DashboardItemForm = ({
           >
             {iconOptions.map((option) => (
               <Picker.Item
+                style={{
+                  fontSize: 10,
+                }}
                 key={option.value}
                 label={option.label}
                 value={option.value}

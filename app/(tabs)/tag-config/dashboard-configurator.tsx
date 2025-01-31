@@ -160,7 +160,7 @@ export default function DashboardConfigurator() {
                   className="w-[48%]"
                   onPress={() => removeItem(item)}
                 >
-                  <DashboardItem isEditable={false} dashItem={item} />
+                  <DashboardItem dashItem={item} />
                 </Pressable>
               ))}
 

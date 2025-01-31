@@ -14,7 +14,7 @@ export const secureStorage = {
   },
   setItem: async (name: string, value: any) => {
     try {
-      console.log(`Inserting ${name} into secure storage...`);
+      console.log(`Setting ${name} in secure storage...`);
       await SecureStore.setItem(name, JSON.stringify(value));
     } catch (error) {
       console.error("Error setting secure store item:", error);

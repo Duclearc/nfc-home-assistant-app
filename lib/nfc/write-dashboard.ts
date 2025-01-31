@@ -15,7 +15,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
   );
 
   try {
-    console.log(JSON.stringify(dashboard, null, 2));
+    // console.log(JSON.stringify(dashboard, null, 2));
 
     const dashboardProto = DashboardProto.Dashboard.fromObject({
       ...dashboard,
@@ -49,7 +49,7 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
     const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
 
     if (bytes) {
-      Vibration.vibrate([50, 50], true);
+      Vibration.vibrate([100, 100], true);
       await NfcManager.ndefHandler // STEP 2
         .writeNdefMessage(bytes); // STEP 3
       Vibration.cancel();

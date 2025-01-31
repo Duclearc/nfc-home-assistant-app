@@ -1,6 +1,6 @@
 import { toByteArray } from "base64-js";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
@@ -11,7 +11,7 @@ import { Text } from "~/components/ui/text";
 import { SmartphoneNfc } from "~/lib/icons/lucide";
 import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
 import { useDataStore } from "~/stores/data";
-import { Dashboard } from "~/types/dashboard";
+import { Dashboard, DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { triggerService } from "~/lib/home-assistant/client";
 import { createWebsocket } from "~/lib/home-assistant/websockets";
 const ScanView = () => (
@@ -27,25 +27,65 @@ const ScanView = () => (
   </View>
 );
 
-createWebsocket();
+type UIDash = Omit<Dashboard, "items"> & {
+  items: Array<TDashboardItem & { state?: string }>;
+};
 
 export default function HomeScreen() {
-  const [currentDash, setCurrentDash] = useState<Dashboard>();
+  const [currentDash, setCurrentDash] = useState<UIDash>();
+  const dashRef = useRef<UIDash>();
+
+  const [ws, setWs] = useState<WebSocket>();
+
   const [isServiceLoading, setServiceLoading] = useState("");
   const { query } = useLocalSearchParams(); // TAG URL → haydan:///?query=[encoded-dashboard-data]
 
   const { isScanning, setIsScanning } = useDataStore();
 
   useEffect(() => {
+    dashRef.current = currentDash;
+  }, [currentDash]);
+
+  useEffect(() => {
     runWhenTabOpens();
   }, [query]);
 
+  const updateDashItemState = (eventEntity?: string, state?: string) => {
+    if (!eventEntity || !state) return;
+    console.log(`Event for ${eventEntity} (${currentDash?.items})`);
+
+    const dash = dashRef.current;
+
+    const dashItem = dash?.items.find(
+      (dashItem) => eventEntity === dashItem.entity
+    );
+
+    if (dashItem) {
+      console.log(`Updating state for ${dashItem.entity} to ${state}`);
+      const newItem = { ...dashItem, state };
+      const newItems = dash?.items.map((i) =>
+        i.entity === dashItem.entity ? newItem : i
+      );
+      console.log("newItems", newItems);
+      setCurrentDash({
+        ...dash,
+        // @ts-ignore
+        items: newItems,
+      });
+    }
+  };
+
   const runWhenTabOpens = async () => {
+    if (ws) {
+      ws.close();
+      setWs(undefined);
+    }
+
     setIsScanning(true);
     // console.log("Running when tab opens! ", query);
 
     if (!query) {
-      console.error("No query found!");
+      // console.error("No query found!");
       setCurrentDash(undefined);
       return setIsScanning(false);
     }
@@ -66,7 +106,19 @@ export default function HomeScreen() {
         entity: i.entity!,
       })),
     };
+
     setCurrentDash(dashboard);
+
+    const newWs = createWebsocket(
+      dashboard.api_key,
+      dashboard.url_base,
+      (event) =>
+        updateDashItemState(
+          event.event?.data?.entity_id,
+          event.event?.data?.new_state?.state
+        )
+    );
+    setWs(newWs);
   };
 
   useEffect(() => {
@@ -82,7 +134,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 pt-10 px-5 flex-col justify-between">
-      {/* <Text>Query: {query}</Text> */}
+      {/* <Text>{JSON.stringify(currentDash?.items, null, 2)}</Text> */}
       {isScanning ? <ActivityIndicator /> : null}
       {!currentDash ? (
         <ScanView />
@@ -125,6 +177,7 @@ export default function HomeScreen() {
           variant="outline"
           children={<Text>Clear dashboard</Text>}
           onPress={() => {
+            ws?.close();
             setCurrentDash(undefined);
           }}
         />

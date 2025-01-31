@@ -6,15 +6,16 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  FileQuestion,
   Home,
   LayoutDashboard,
   Lightbulb,
+  Nfc,
   Plus,
   SmartphoneNfc,
   Target,
   Trash2,
   X,
-  FileQuestion,
 } from "lucide-react-native";
 
 iconWithClassName(AlarmClock);
@@ -22,10 +23,11 @@ iconWithClassName(ArrowLeft);
 iconWithClassName(Check);
 iconWithClassName(ChevronDown);
 iconWithClassName(ChevronUp);
-iconWithClassName(Home);
 iconWithClassName(FileQuestion);
+iconWithClassName(Home);
 iconWithClassName(LayoutDashboard);
 iconWithClassName(Lightbulb);
+iconWithClassName(Nfc);
 iconWithClassName(Plus);
 iconWithClassName(SmartphoneNfc);
 iconWithClassName(Target);
@@ -35,13 +37,14 @@ iconWithClassName(X);
 export {
   AlarmClock,
   ArrowLeft,
-  FileQuestion,
   Check,
   ChevronDown,
   ChevronUp,
+  FileQuestion,
   Home,
   LayoutDashboard,
   Lightbulb,
+  Nfc,
   Plus,
   SmartphoneNfc,
   Target,
