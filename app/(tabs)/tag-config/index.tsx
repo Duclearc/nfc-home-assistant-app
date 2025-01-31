@@ -13,7 +13,9 @@ export default function TagConfigScreen() {
 
   return (
     <ScrollView className={STYLE.wrapper}>
-      <Text className={`${STYLE.title} text-3xl mb-3`}>My dashboard tags</Text>
+      <Text className={`${STYLE.title} text-3xl mt-16 mb-3`}>
+        My dashboard tags
+      </Text>
       <Text className="text-sm text-muted-foreground">
         {dashboards.length} tag(s) saved
       </Text>

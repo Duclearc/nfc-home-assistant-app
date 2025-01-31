@@ -4,6 +4,7 @@ import config from "~/app.config.js";
 import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
 import { Dashboard } from "~/types/dashboard";
 import { MAX_PAYLOAD_SIZE_BYTES } from "./constants";
+import { Vibration } from "react-native";
 
 export const writeDashboardToTag = async (dashboard: Dashboard) => {
   let result = { success: false, error: "" };
@@ -48,8 +49,10 @@ export const writeDashboardToTag = async (dashboard: Dashboard) => {
     const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
 
     if (bytes) {
+      Vibration.vibrate([50, 50], true);
       await NfcManager.ndefHandler // STEP 2
         .writeNdefMessage(bytes); // STEP 3
+      Vibration.cancel();
       result.success = true;
     }
   } catch (ex) {

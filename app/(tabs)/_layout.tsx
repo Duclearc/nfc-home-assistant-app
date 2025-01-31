@@ -15,13 +15,12 @@ export default function TabLayout() {
         name="dashboards"
         options={{
           title: "Dashboards",
-          headerShown: false,
         }}
       />
       <Tabs.Screen
         name="tag-config"
         options={{
-          title: "Tags",
+          title: "My dashboard tags",
           headerShown: false,
         }}
       />

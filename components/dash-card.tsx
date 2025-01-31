@@ -22,7 +22,7 @@ const DashCard = ({
   footer?: string;
 }) => {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className={STYLE.title}>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

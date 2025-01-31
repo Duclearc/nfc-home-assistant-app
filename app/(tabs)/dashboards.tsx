@@ -1,4 +1,4 @@
-import { AlarmClock, Lightbulb } from "lucide-react-native";
+import { Lightbulb } from "lucide-react-native";
 import { FlatList, Text, View } from "react-native";
 import DashCard from "~/components/dash-card";
 import { STYLE } from "~/lib/constants";
@@ -7,30 +7,23 @@ import useDashboardsStore from "~/stores/dashboards";
 export default function Dashboards() {
   const { dashboards } = useDashboardsStore();
   return (
-    <View className={STYLE.wrapper}>
-      <Text className={`${STYLE.title} text-3xl`}>Dashboards</Text>
+    <View className={"flex-1 p-2"}>
       <FlatList
         data={dashboards}
         contentContainerClassName="gap-3"
-        renderItem={({ item }) => (
+        renderItem={({ item: dashboard }) => (
           <View>
             <DashCard
-              title={item.name}
-              description={item.url_base}
+              title={dashboard.name}
+              description={dashboard.url_base}
               content={
                 <FlatList
-                  data={item.items}
+                  data={dashboard.items}
+                  keyExtractor={(item) => item.entity}
                   renderItem={({ item }) => (
-                    <View className="flex-row justify-between my-2">
-                      <View className="flex-row gap-2">
-                        {item.icon === "lightbulb" ? (
-                          <Lightbulb className="text-black" />
-                        ) : (
-                          <AlarmClock className="text-black" />
-                        )}
-                        <Text className="text-lg">{item.name}</Text>
-                      </View>
-                      <Text className="text-lg font-mono">{item.entity}</Text>
+                    <View className="flex-row gap-2 my-1">
+                      <Lightbulb className="text-black" />
+                      <Text className="text-lg">{item.name}</Text>
                     </View>
                   )}
                 />

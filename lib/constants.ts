@@ -20,5 +20,5 @@ export const NAV_THEME = {
 export const STYLE = {
   title: "font-serif font-bold",
   wrapper: "flex-1 py-10 px-5",
-  layout: "flex-1",
+  layout: "flex-1 bg-red-500",
 };

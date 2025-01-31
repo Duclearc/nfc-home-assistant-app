@@ -1,20 +1,19 @@
 import { toByteArray } from "base64-js";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
+import DashboardItem from "~/components/dashboards/dashboard-item";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 import { SmartphoneNfc } from "~/lib/icons/lucide";
 import { dashboard as DashboardProto } from "~/proto/gen/dashboard";
-import useDashboardsStore from "~/stores/dashboards";
 import { useDataStore } from "~/stores/data";
 import { Dashboard } from "~/types/dashboard";
-import DashboardItem from "~/components/dashboards/dashboard-item";
-import { triggerService } from "../../lib/home-assistant/client";
-import { toast } from "sonner-native";
-
+import { triggerService } from "~/lib/home-assistant/client";
+import { createWebsocket } from "~/lib/home-assistant/websockets";
 const ScanView = () => (
   <View className="flex-1 items-center justify-center">
     <View className="items-center justify-center">
@@ -28,10 +27,12 @@ const ScanView = () => (
   </View>
 );
 
+createWebsocket();
+
 export default function HomeScreen() {
   const [currentDash, setCurrentDash] = useState<Dashboard>();
-  // TAG URL → haydan:///?query=hello&query2=world
-  const { query } = useLocalSearchParams(); // { query: "hello", query2: "world" }
+  const [isServiceLoading, setServiceLoading] = useState("");
+  const { query } = useLocalSearchParams(); // TAG URL → haydan:///?query=[encoded-dashboard-data]
 
   const { isScanning, setIsScanning } = useDataStore();
 
@@ -41,10 +42,7 @@ export default function HomeScreen() {
 
   const runWhenTabOpens = async () => {
     setIsScanning(true);
-    console.log("Running when tab opens! ", query);
-
-    // Wait to prevent race condition with setting getting the query in the local search params
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // console.log("Running when tab opens! ", query);
 
     if (!query) {
       console.error("No query found!");
@@ -57,7 +55,7 @@ export default function HomeScreen() {
       DashboardProto.Dashboard.deserializeBinary(byteArray);
     const dashboardData = dashboardProtoData.toObject();
 
-    console.log("Dashboard data: ", JSON.stringify(dashboardData, null, 2));
+    // console.log("Dashboard data: ", JSON.stringify(dashboardData, null, 2));
 
     const dashboard: Dashboard = {
       url_base: dashboardData.url_base!,
@@ -83,7 +81,7 @@ export default function HomeScreen() {
   // );
 
   return (
-    <SafeAreaView className="flex-1 py-10 px-5">
+    <SafeAreaView className="flex-1 pt-10 px-5 flex-col justify-between">
       {/* <Text>Query: {query}</Text> */}
       {isScanning ? <ActivityIndicator /> : null}
       {!currentDash ? (
@@ -97,10 +95,10 @@ export default function HomeScreen() {
               <Pressable
                 key={item.entity}
                 onPress={async () => {
+                  setServiceLoading(item.entity);
                   const success = await triggerService(
                     currentDash.url_base,
                     currentDash.api_key,
-                    "turn_on",
                     item.entity
                   );
                   if (success) {
@@ -108,9 +106,14 @@ export default function HomeScreen() {
                   } else {
                     toast.error("Failed to trigger service");
                   }
+                  setServiceLoading("");
                 }}
+                className="my-1"
               >
-                <DashboardItem dashItem={item} />
+                <DashboardItem
+                  dashItem={item}
+                  isLoading={isServiceLoading === item.entity}
+                />
               </Pressable>
             ))}
           </ScrollView>
@@ -118,9 +121,9 @@ export default function HomeScreen() {
       )}
       {currentDash ? (
         <Button
-          className="my-2 items-center justify-center"
+          className="items-center justify-center"
           variant="outline"
-          children={<Text>Clear</Text>}
+          children={<Text>Clear dashboard</Text>}
           onPress={() => {
             setCurrentDash(undefined);
           }}

@@ -85,7 +85,6 @@ export const getDevices = async (url: string, key: string) => {
 export const triggerService = async (
   url: string,
   key: string,
-  service: string,
   entity: string
 ) => {
   const path = entity.includes("light.")

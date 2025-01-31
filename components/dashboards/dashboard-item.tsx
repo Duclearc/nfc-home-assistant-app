@@ -1,11 +1,13 @@
 import { Card, CardTitle, CardHeader, CardContent } from "../ui/card";
 import { DashboardItem as TDashboardItem } from "~/types/dashboard";
 import { getIcon } from "~/lib/icons/getIcon";
+import { ActivityIndicator } from "react-native";
 
 const DashboardItem = ({
   dashItem,
+  isLoading = false,
 }: {
-  isEditable?: boolean;
+  isLoading?: boolean;
   dashItem: TDashboardItem;
 }) => {
   return (
@@ -13,7 +15,9 @@ const DashboardItem = ({
       <CardHeader>
         <CardTitle className="text-sm">{dashItem.name}</CardTitle>
       </CardHeader>
-      <CardContent>{getIcon(dashItem.entity)}</CardContent>
+      <CardContent>
+        {isLoading ? <ActivityIndicator /> : getIcon(dashItem.entity)}
+      </CardContent>
     </Card>
   );
 };
